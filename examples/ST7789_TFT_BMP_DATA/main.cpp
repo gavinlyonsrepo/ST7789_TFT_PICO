@@ -69,7 +69,7 @@ void Setup(void)
 	printf("TFT :: Start\r\n");
 
 	//*************** USER OPTION 0 SPI_SPEED + TYPE ***********
-	bool bhardwareSPI = false; // true for hardware spi,
+	bool bhardwareSPI = true; // true for hardware spi,
 
 	if (bhardwareSPI == true)
 	{								   // hw spi

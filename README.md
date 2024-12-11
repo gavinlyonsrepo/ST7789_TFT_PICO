@@ -23,11 +23,11 @@
 
 0. Library for a TFT SPI LCD, ST7789 Driver
 1. Raspberry pi PICO RP2040 library.
-2. Inverse colour, rotate, sleep, modes supported.
-3. 12 fonts included
+2. Inverse colour, rotate, sleep modes supported.
+3. 12 fonts included.
 4. Graphics + print class included.
 5. bi-color, 16 bit and 24 colour Bitmaps supported.
-6. Hardware and software  SPI
+6. Hardware and software SPI
 
 * Author: Gavin Lyons
 * Developed on Toolchain:
@@ -70,7 +70,7 @@ where user can make adjustments to select for SPI type used, PCB type used and s
 *USER OPTION 0 SPI SPEED* 
 
 Here the user can pass the SPI Bus freq in kiloHertz, Currently set to 8 Mhz.
-Max SPI speed on the PICO is 62.5Mhz. There is a file with SPI test results for the FPS tests in extra/doc folder. "nd parameter is the SPI interface(spi0 spi1 etc). 
+Max SPI speed on the PICO is 62.5Mhz. There is a file with SPI test results for the FPS tests in extra/doc folder. 2nd parameter is the SPI interface(spi0 spi1 etc). 
 
 If users wants software SPI just call this method 
 with just one argument for the optional GPIO software uS delay,
@@ -135,7 +135,7 @@ There are 4 functions to support drawing bitmaps,
 
 | Num | Function Name | Colour support | test bitmap data size |  Note |
 | ------ | ------ | ------ | ------ | ------ |
-| 1 | TFTdrawIcon | bi-colour | (8 x (0-Max_y)) -- | Data vertically addressed |
+| 1 | TFTdrawIcon | bi-colour | (8 x (0-Max_y))  | Data vertically addressed |
 | 2 | TFTdrawBitmap | bi-colour | 2048 bytes  | Data horizontally  addressed |
 | 3 | TFTdrawBitmap16Data | 16 bit color 565  | 32768  | Data from array on PICO |
 | 4 | TFTdrawBitmap24Data  | 24 bit color  | 49152  | Data from array on PICO, Converted by software to 16-bit color  |
