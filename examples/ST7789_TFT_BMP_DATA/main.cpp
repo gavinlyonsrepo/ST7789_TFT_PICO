@@ -1,0 +1,333 @@
+/*!
+	@file     main.cpp
+	@author   Gavin Lyons
+	@brief Example cpp file for ST7789_TFT_PICO library.
+			bitmap tests + FPS bitmap test.
+	@note  See USER OPTIONS 0-2 in SETUP function
+
+	@test
+		-# Test 401 "clock demo" , icons, , font 7
+		-# Test 402 bi-color small image
+		-# Test 403 bi-color full screen image 128x128
+		-# Test 404 16 bit color image from a data array
+		-# Test 405 24 bit color image data from a data array
+		-# Test 701 FPS bitmap results to serial port
+
+*/
+
+// Section ::  libraries
+#include "pico/stdlib.h"
+#include "hardware/spi.h"
+#include "st7789/ST7789_TFT.hpp"
+#include "st7789/ST7789_TFT_Bitmap_Data.hpp"
+
+// Section :: Defines
+//  Test timing related defines
+#define TEST_DELAY1 1000
+#define TEST_DELAY2 2000
+#define TEST_DELAY5 5000
+#define CLOCK_DISPLAY_TIME 20 // seconds
+
+// Section :: Globals
+ST7789_TFT myTFT;
+
+//  Section ::  Function Headers
+
+void Setup(void);	// setup + user options
+void Test401(void); // "clock demo" , icons, , font 7
+void Test402(void); // bi-color small image
+void Test403(void); // bi-color full screen image 128x128
+void Test404(void); // 16 bit color image from a data array
+void Test405(void); // 24 bit color image data from a data array
+void Test701(void); // FPS test, results to serial port
+void EndTests(void);
+
+//  Section ::  MAIN
+
+int main(void)
+{
+	Setup();
+	Test401();
+	Test402();
+	Test403();
+	Test404();
+	Test405();
+	Test701();
+	EndTests();
+}
+// *** End OF MAIN **
+
+//  Section ::  Function Space
+
+/*!
+	@brief  setup + user options
+*/
+void Setup(void)
+{
+	stdio_init_all(); // Initialize chosen serial port
+	TFT_MILLISEC_DELAY(TEST_DELAY1);
+	printf("TFT :: Start\r\n");
+
+	//*************** USER OPTION 0 SPI_SPEED + TYPE ***********
+	bool bhardwareSPI = false; // true for hardware spi,
+
+	if (bhardwareSPI == true)
+	{								   // hw spi
+		uint32_t TFT_SCLK_FREQ = 8000; // Spi freq in KiloHertz , 1000 = 1Mhz , max 62500
+		myTFT.TFTInitSPIType(TFT_SCLK_FREQ, spi0);
+	}
+	else
+	{								 // sw spi
+		uint16_t SWSPICommDelay = 0; // optional SW SPI GPIO delay in uS
+		myTFT.TFTInitSPIType(SWSPICommDelay);
+	}
+	//**********************************************************
+
+	// ******** USER OPTION 1 GPIO *********
+	// NOTE if using Hardware SPI clock and data pins will be tied to
+	// the chosen interface (eg Spi0 CLK=18 DIN=19)
+	int8_t SDIN_TFT = 19;
+	int8_t SCLK_TFT = 18;
+	int8_t DC_TFT = 3;
+	int8_t CS_TFT = 2;
+	int8_t RST_TFT = 17;
+	myTFT.TFTSetupGPIO(RST_TFT, DC_TFT, CS_TFT, SCLK_TFT, SDIN_TFT);
+	//**********************************************************
+
+	// ****** USER OPTION 2 Screen Setup ******
+	uint16_t OFFSET_COL = 0;	   // 2, These offsets can be adjusted for any issues->
+	uint16_t OFFSET_ROW = 0;	   // 3, with manufacture tolerance/defects
+	uint16_t TFT_WIDTH = 240;  // Screen width in pixels
+	uint16_t TFT_HEIGHT = 320; // Screen height in pixels
+	myTFT.TFTInitScreenSize(OFFSET_COL, OFFSET_ROW, TFT_WIDTH, TFT_HEIGHT);
+	// ******************************************
+
+	myTFT.TFTST7789Initialize(); 
+}
+
+/*!
+	@brief  "clock demo" , icons, , font 7
+*/
+void Test401(void)
+{
+	myTFT.TFTfillScreen(ST7789_BLACK);
+
+	// Test variables
+	uint16_t count = CLOCK_DISPLAY_TIME;
+	char strCount[6];
+	char strTime[12];
+	char strName[8] = "G Lyons";
+	uint8_t Hour = 10;
+	uint8_t Min = 59;
+	uint8_t Sec = 45;
+	unsigned long previousMillis = 0; // will store last time display was updated
+	const long interval = 1000;		  //   interval at which to update display (milliseconds)
+
+	// All icons data vertically addressed
+	// power icon, 12x8
+	const unsigned char powerIcon[12] = {0xff, 0xe7, 0xc3, 0x99, 0xa5, 0xad, 0xad, 0xa5, 0x99, 0xc3, 0xe7, 0xff};
+	// lighting symbol, 12x8
+	const unsigned char speedIcon[12] = {0xff, 0xff, 0xf7, 0xb3, 0xd1, 0xc0, 0xe0, 0xf4, 0xf6, 0xfe, 0xff, 0xff};
+	// Mobile icon  16x8px
+	const unsigned char SignalIcon[16] = {0x03, 0x05, 0x09, 0xff, 0x09, 0x05, 0xf3, 0x00, 0xf8, 0x00, 0xfc, 0x00, 0xfe, 0x00, 0xff, 0x00};
+	// Message icon  16x8px
+	const unsigned char MsgIcon[16] = {0x00, 0x00, 0x00, 0xff, 0x85, 0x89, 0x91, 0x91, 0x91, 0x91, 0x89, 0x85, 0xff, 0x00, 0x00, 0x00};
+	// Alarm icon  8x8px
+	const unsigned char AlarmIcon[8] = {0x83, 0xbd, 0x42, 0x4a, 0x52, 0x52, 0xbd, 0x83};
+	// Battery Icon  16x8px
+	const unsigned char BatIcon[16] = {0x00, 0x00, 0x7e, 0x42, 0x81, 0xbd, 0xbd, 0x81, 0xbd, 0xbd, 0x81, 0xbd, 0xbd, 0x81, 0xff, 0x00};
+
+	// TOP icons box
+	myTFT.TFTdrawIcon(40, 40, 16, ST7789_BLACK, ST7789_WHITE, SignalIcon);
+	myTFT.TFTdrawIcon(60, 40, 16, ST7789_BLACK, ST7789_WHITE, MsgIcon);
+	myTFT.TFTdrawIcon(80, 40, 8, ST7789_BLACK, ST7789_WHITE, AlarmIcon);
+	myTFT.TFTdrawIcon(210, 40, 16, ST7789_BLACK, ST7789_WHITE, BatIcon);
+	// second box
+	myTFT.TFTdrawIcon(35, 70, 12, ST7789_GREEN, ST7789_BLACK, powerIcon);
+	myTFT.TFTdrawIcon(55, 70, 12, ST7789_RED, ST7789_YELLOW, speedIcon);
+	myTFT.TFTdrawText(80, 70, strName, ST7789_BLUE, ST7789_BLACK, 1);
+
+	// RED section lines
+	myTFT.TFTdrawFastHLine(0,60,280, ST7789_RED);
+	myTFT.TFTdrawFastHLine(0,90,280, ST7789_RED);
+	myTFT.TFTdrawFastHLine(0,135,280, ST7789_RED);
+	myTFT.TFTdrawFastHLine(0,180,280, ST7789_RED);
+	myTFT.TFTdrawFastHLine(0,230,280, ST7789_RED);
+
+	myTFT.TFTFontNum(myTFT.TFTFont_Bignum);
+	while (1)
+	{
+		unsigned long currentMillis = to_ms_since_boot(get_absolute_time());
+
+		if (currentMillis - previousMillis >= interval)
+		{
+			previousMillis = currentMillis;
+			Sec++;
+			if (Sec == 60)
+			{
+				Min++;
+				Sec = 0;
+				if (Min == 60)
+				{
+					Hour++;
+					Min = 0;
+					if (Hour == 24)
+					{
+						Hour = 0;
+					}
+				}
+			}
+			// display Clock
+			myTFT.TFTFontNum(myTFT.TFTFont_Bignum);
+			snprintf(strTime, sizeof(strTime), "%02u:%02u:%02u", Hour, Min, Sec);
+			myTFT.TFTdrawText(50, 100, strTime, ST7789_GREEN, ST7789_BLACK);
+			// display counter
+			myTFT.TFTFontNum(myTFT.TFTFont_Mednum);
+			snprintf(strCount, sizeof(strCount), "%03d", count);
+			myTFT.TFTdrawText(50, 140, strCount, ST7789_YELLOW, ST7789_RED);
+			count--;
+			// Display the Libary version number
+			myTFT.TFTsetCursor(160, 140);
+			myTFT.print(myTFT.TFTLibVerNumGet());
+		} // if every second
+
+		if (count == 1)
+			break;
+	} // end of while
+
+	TFT_MILLISEC_DELAY(TEST_DELAY2);
+	myTFT.TFTfillScreen(ST7789_BLACK);
+	myTFT.TFTFontNum(myTFT.TFTFont_Default);
+} // end of test 401
+
+/*!
+	@brief  test 402 bi-color small image 20x24
+*/
+void Test402(void)
+{
+
+	myTFT.TFTfillScreen(ST7789_BLACK);
+	char teststr1[] = "Test 402";
+	myTFT.TFTdrawText(50, 50, teststr1, ST7789_WHITE, ST7789_BLACK, 1);
+	myTFT.TFTdrawBitmap(80, 60, 40, 16, ST7789_CYAN, ST7789_BLACK, (uint8_t *)pSunTextImage,80);
+	myTFT.TFTdrawBitmap(20, 100, 40, 16, ST7789_RED, ST7789_BLACK, (uint8_t *)pSunTextImage,80);
+	myTFT.TFTdrawBitmap(30, 140, 40, 16, ST7789_YELLOW, ST7789_RED, (uint8_t *)pSunTextImage, 80);
+	TFT_MILLISEC_DELAY(TEST_DELAY5);
+	myTFT.TFTfillScreen(ST7789_BLACK);
+}
+
+/*!
+	@brief  Test403 bi-color full screen image 128x128
+*/
+void Test403(void)
+{
+	char teststr1[] = "Test 403";
+	myTFT.TFTdrawText(50, 50, teststr1, ST7789_WHITE, ST7789_BLACK, 1);
+	TFT_MILLISEC_DELAY(TEST_DELAY2);
+
+	myTFT.TFTdrawBitmap(50, 65, 128, 128, ST7789_WHITE, ST7789_GREEN, (uint8_t *)pBackupMenuBitmap, 2048);
+	TFT_MILLISEC_DELAY(TEST_DELAY5);
+	myTFT.TFTfillScreen(ST7789_BLACK);
+}
+
+/*!
+	@brief  Test404 16 bit color image from a data array
+*/
+void Test404(void)
+{
+	char teststr1[] = "Test 404";
+	myTFT.TFTdrawText(50, 50, teststr1, ST7789_WHITE, ST7789_BLACK, 1);
+	TFT_MILLISEC_DELAY(TEST_DELAY5);
+
+	myTFT.TFTdrawBitmap16Data(65, 65, (uint8_t *)pMotorImage, 128, 128);
+	TFT_MILLISEC_DELAY(TEST_DELAY5);
+	myTFT.TFTfillScreen(ST7789_BLACK);
+}
+
+/*!
+	@brief  Test405 24 bit color image data from a data array
+*/
+void Test405(void)
+{
+	char teststr1[] = "Test 405";
+	myTFT.TFTdrawText(50, 50, teststr1, ST7789_WHITE, ST7789_BLACK, 1);
+	TFT_MILLISEC_DELAY(TEST_DELAY5);
+
+	myTFT.TFTdrawBitmap24Data(65, 65, (uint8_t *)pFruitBowlImage, 128, 128);
+	TFT_MILLISEC_DELAY(TEST_DELAY5);
+	myTFT.TFTfillScreen(ST7789_BLACK);
+}
+
+/*!
+	@brief  Test701 frame rate per second FPS ,results to serial port
+*/
+void Test701(void)
+{
+	// Values to count frame rate per second
+	long previousMillis = 0;
+	long lastFramerate = 0;
+	long currentFramerate = 0;
+
+	uint16_t count = 0;
+	uint16_t seconds = 0;
+	uint16_t fps = 0;
+
+	char teststr1[] = "Test 701 FPS, Output Results to USB port";
+	myTFT.TFTdrawText(20, 50, teststr1, ST7789_WHITE, ST7789_BLACK, 2);
+	TFT_MILLISEC_DELAY(TEST_DELAY5);
+	myTFT.setTextColor(ST7789_YELLOW, ST7789_RED);
+
+	while (1)
+	{
+		unsigned long currentMillis = to_ms_since_boot(get_absolute_time());
+
+		if (currentMillis - previousMillis >= 1000) // every second
+		{
+			fps = currentFramerate - lastFramerate;
+			lastFramerate = currentFramerate;
+			previousMillis = currentMillis;
+			seconds++;
+			if (seconds == 20)
+				break;
+		}
+		currentFramerate++;
+		count++;
+
+		//  ** Code to test **
+		myTFT.TFTdrawBitmap16Data(70, 120 ,(uint8_t *)pMotorImage, 128, 128);
+		myTFT.TFTsetCursor(60, 90); 
+		myTFT.print(fps);
+		//   **
+	} // end of while
+	
+	// Report results to usb
+	printf("Seconds :: %u \n", seconds);
+	printf("Count :: %u \n", count);
+	printf("FPS :: %u \n", fps);
+	// Print to screen
+	myTFT.TFTfillScreen(ST7789_BLACK);
+	myTFT.TFTsetCursor(0, 50); 
+	myTFT.setTextSize(2);
+	myTFT.print("Seconds : ");
+	myTFT.println(seconds);
+	myTFT.print("Count : ");
+	myTFT.println(count);
+	myTFT.print("FPS : ");
+	myTFT.print(fps);
+	TFT_MILLISEC_DELAY(TEST_DELAY5);
+	myTFT.TFTfillScreen(ST7789_BLACK);
+}
+
+/*!
+	@brief  Stop testing and shutdown the TFT
+*/
+void EndTests(void)
+{
+	char teststr1[] = "Tests over";
+	myTFT.TFTfillScreen(ST7789_BLACK);
+	myTFT.TFTdrawText(50, 50, teststr1, ST7789_GREEN, ST7789_BLACK, 2);
+	TFT_MILLISEC_DELAY(TEST_DELAY5);
+	myTFT.TFTPowerDown();
+	printf("TFT :: Tests Over\r\n");
+}
+// *************** EOF ****************
