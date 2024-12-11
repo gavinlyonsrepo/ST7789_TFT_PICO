@@ -89,7 +89,6 @@ void ST7789_TFT ::TFTSetupGPIO(int8_t rst, int8_t dc, int8_t cs, int8_t sclk, in
 
 /*!
 	@brief init routine for ST7789 controller
-	@return rvlDisplay_SPIbeginFail error if bcm2835_spi_begin or bcm2835_aux_spi_begin has failed
 */
 void ST7789_TFT::TFTST7789Initialize() {
 	TFTResetPIN();
