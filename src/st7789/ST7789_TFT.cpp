@@ -371,4 +371,47 @@ void ST7789_TFT::TFTsetAddrWindow(uint16_t x0, uint16_t y0, uint16_t x1, uint16_
 	spiWriteDataBuffer(seqRASET, sizeof(seqRASET));
 	writeCommand(ST7789_RAMWR); // Write to RAM*/
 }
+
+/*!
+	@brief This method defines the Vertical Scrolling Area of the display where:
+	@param top_fix_heightTFT describes the Top Fixed Area,
+	@param bottom_fix_heightTFT describes the Bottom Fixed Area and
+	@param _scroll_direction is scroll direction (0 for top to bottom and 1 for bottom to top).
+*/
+void ST7789_TFT::TFTsetScrollDefinition(uint16_t top_fix_heightTFT, uint16_t bottom_fix_heightTFT, bool _scroll_direction) {
+	uint16_t scroll_heightTFT;
+	scroll_heightTFT = 320- top_fix_heightTFT - bottom_fix_heightTFT; // ST7789 320x240 VRAM
+	writeCommand(ST7789_VSCRDEF);
+	writeData(top_fix_heightTFT >> 8);
+	writeData(top_fix_heightTFT & 0xFF);
+	writeData(scroll_heightTFT >> 8);
+	writeData(scroll_heightTFT & 0xFF);
+	writeData(bottom_fix_heightTFT >> 8);
+	writeData(bottom_fix_heightTFT & 0xFF);
+	//writeCommand(ST7789_MADCTL);
+
+	if (_scroll_direction) {
+		writeData(ST7789_SRLBTT); //bottom to top
+	} else {
+		writeData(ST7789_SRLTTB); //top to bottom
+	}
+}
+
+/*!
+	@brief This method is used together with the TFTsetScrollDefinition.
+*/
+void ST7789_TFT ::TFTVerticalScroll(uint16_t _vsp) {
+	writeCommand(ST7789_VSCRSADD);
+	writeData(_vsp >> 8);
+	writeData(_vsp & 0xFF);
+}
+
+/*!
+	@brief Software reset command
+*/
+void ST7789_TFT::TFTresetSWDisplay(void) 
+{
+  writeCommand(ST7789_SWRESET);
+  TFT_MILLISEC_DELAY(5);
+}
 //**************** EOF *****************

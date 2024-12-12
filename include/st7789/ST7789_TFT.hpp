@@ -178,6 +178,10 @@ public:
 	uint16_t TFTSwSpiGpioDelayGet(void);
 	void TFTSwSpiGpioDelaySet(uint16_t);
 
+	void TFTresetSWDisplay(void);
+    void TFTsetScrollDefinition(uint16_t th, uint16_t tb, bool sd);
+	void TFTVerticalScroll(uint16_t vsp);
+
 private:
 	void TFTHWSPIInitialize(void);
 	void TFTResetPIN(void);

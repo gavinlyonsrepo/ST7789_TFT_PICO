@@ -7,8 +7,9 @@
 	@note  See USER OPTIONS 0-2 in SETUP function
 
 	@test
+		-# Test300 Scroll test 
 		-# Test301 Color
-		-# Test303  Rotate
+		-# Test303 Rotate
 		-# Test304 change modes test -> Invert, display on/off and Sleep.
 		-# Test702 FPS frame rate per second test 
 */
@@ -31,6 +32,7 @@ ST7789_TFT myTFT;
 //  Section ::  Function Headers
 
 void Setup(void);	// setup + user options
+void Test300(void);
 void Test301(void);	// test colors
 void Test303(void);	// Rotate
 void Test304(void);	// change modes test -> Invert, display on/off and Sleep.
@@ -42,6 +44,7 @@ void EndTests(void);
 int main(void)
 {
 	Setup();
+	Test300();
 	Test301();
 	Test303();
 	Test304();
@@ -98,6 +101,34 @@ void Setup(void)
 
 
 	myTFT.TFTST7789Initialize();
+	myTFT.TFTfillScreen(ST7789_BLACK);
+}
+void Test300(void)
+{
+	printf("Test 300: Scroll\r\n");
+	myTFT.TFTFontNum(myTFT.TFTFont_Default);
+	const uint8_t LINES = 10, LINE_SIZE = 10, LINE_OFFSET = 3, TOP_FIXED = 0, BOTTOM_FIXED = 0;
+	char teststr1[] = "Scroll test";
+	
+	for (uint8_t i = 0; i < LINES; i++)
+	{
+	myTFT.TFTdrawText(5, LINE_OFFSET+i*LINE_SIZE,teststr1 , ST7789_WHITE, ST7789_BLACK, 1);
+	}
+	myTFT.TFTsetScrollDefinition(TOP_FIXED,BOTTOM_FIXED,1);  // bottom-to-top
+	uint8_t pos = LINE_OFFSET;
+	for (uint8_t i = 0; i < LINES; i++) 
+	{
+		for (uint8_t j = 0; j < LINE_SIZE; j++) 
+		{
+			myTFT.TFTVerticalScroll(pos + TOP_FIXED);
+			pos++;
+			// check pos if necessary: must be < tftTFT_HEIGHT - TOP_FIXED - BOTTOM_FIXED 
+		}
+	TFT_MILLISEC_DELAY(TEST_DELAY1);
+	}
+	myTFT.TFTNormalMode();
+	myTFT.TFTfillScreen(ST7789_BLACK);
+
 }
 
 void Test301(void)
