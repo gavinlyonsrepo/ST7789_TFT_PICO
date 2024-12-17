@@ -45,7 +45,7 @@ void ST7789_TFT_graphics ::TFTdrawPixel(uint16_t x, uint16_t y, uint16_t color)
 		-# 3 Malloc failure
 	@note  uses spiWriteBuffer method
 */
-uint8_t ST7789_TFT_graphics ::TFTfillRectangle(uint16_t x, uint16_t y, uint16_t w, uint16_t h, uint16_t color)
+uint8_t ST7789_TFT_graphics ::TFTfillRectBuffer(uint16_t x, uint16_t y, uint16_t w, uint16_t h, uint16_t color)
 {
 	uint8_t hi, lo;
 
@@ -91,7 +91,7 @@ uint8_t ST7789_TFT_graphics ::TFTfillRectangle(uint16_t x, uint16_t y, uint16_t 
 */
 void ST7789_TFT_graphics ::TFTfillScreen(uint16_t color)
 {
-	TFTfillRectangle(0, 0, _widthTFT, _heightTFT, color);
+	TFTfillRectBuffer(0, 0, _widthTFT, _heightTFT, color);
 }
 
 /*!
@@ -1405,6 +1405,55 @@ void ST7789_TFT_graphics::setTextColor(uint16_t c, uint16_t b)
 {
 	_textcolor = c;
 	_textbgcolor = b;
+}
+
+/*!
+	@brief: Draws an 16 bit color sprite bitmap to screen from a data array with transparent background
+	@param x X coordinate
+	@param y Y coordinate
+	@param pBmp pointer to data array
+	@param w width of the sprite in pixels
+	@param h height of the sprite in pixels
+	@param backgroundColor the background color of sprite (16 bit 565) this will be made transparent
+	@note Experimental , does not use buffer or malloc, just draw pixel
+	@return
+		-# 0=success
+		-# 1=invalid pointer object
+		-# 2=Co-ordinates out of bounds
+*/
+uint8_t ST7789_TFT_graphics::TFTdrawSpriteData(uint8_t x, uint8_t y, uint8_t *pBmp, uint8_t w, uint8_t h, uint16_t backgroundColor)
+{
+	uint8_t i, j;
+	uint16_t colour;
+	// 1. Check for null pointer
+	if (pBmp == nullptr)
+	{
+		printf("Error TFTdrawSprite 1: Sprite array is nullptr\r\n");
+		return 1;
+	}
+	// Check bounds
+	if ((x >= _widthTFT) || (y >= _heightTFT))
+	{
+		printf("Error TFTdrawSprite 2: Sprite out of screen bounds\r\n");
+		return 2;
+	}
+	if ((x + w - 1) >= _widthTFT)
+		w = _widthTFT - x;
+	if ((y + h - 1) >= _heightTFT)
+		h = _heightTFT - y;
+
+	for(j = 0; j < h; j++)
+	{
+		for(i = 0; i < w; i ++)
+		{
+			colour = (pBmp[0] << 8) | pBmp[1];
+			pBmp += 2;
+			if (colour != backgroundColor){
+				TFTdrawPixel(x+i-1, y + j-1, colour);
+			}
+		}
+	}
+	return 0;
 }
 
 //**************** EOF *****************

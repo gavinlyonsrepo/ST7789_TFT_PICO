@@ -6,6 +6,7 @@
 	@note  See USER OPTIONS 0-2 in SETUP function
 
 	@test
+		-# Test 400 Sprite 
 		-# Test 401 "clock demo" , icons, , font 7
 		-# Test 402 bi-color small image
 		-# Test 403 bi-color full screen image 128x128
@@ -34,6 +35,7 @@ ST7789_TFT myTFT;
 //  Section ::  Function Headers
 
 void Setup(void);	// setup + user options
+void Test400(void); // sprite
 void Test401(void); // "clock demo" , icons, , font 7
 void Test402(void); // bi-color small image
 void Test403(void); // bi-color full screen image 128x128
@@ -47,6 +49,7 @@ void EndTests(void);
 int main(void)
 {
 	Setup();
+	Test400();
 	Test401();
 	Test402();
 	Test403();
@@ -104,6 +107,32 @@ void Setup(void)
 
 	myTFT.TFTST7789Initialize(); 
 }
+
+/*!
+	@brief  "sprite demo" 32 x 32 with LBLUE background
+*/
+void Test400(void)
+{
+	// Test 400-A test 16-bit color Sprite 
+	// Draw as sprite, without background , 32 X 32 .bakcground color = ST7375_LBLUE
+	// Green bakcground screen
+	myTFT.TFTfillScreen(ST7789_GREEN);
+	TFT_MILLISEC_DELAY(TEST_DELAY5);
+	myTFT.TFTdrawSpriteData(55, 55, (uint8_t *)pSpriteTest16, 32, 32, ST7789_LBLUE);
+	TFT_MILLISEC_DELAY(TEST_DELAY5);
+
+	// Test 400-B test 16-bit color Sprite 
+	// Draw as sprite, without background , 32 X 32 .bakcground color = ST7375_LBLUE
+	// Bitmap background screen
+	myTFT.TFTdrawBitmap24Data(50, 50, (uint8_t *)pFruitBowlImage, 128, 128);
+	TFT_MILLISEC_DELAY(TEST_DELAY5);
+
+    myTFT.TFTdrawSpriteData(80, 50, (uint8_t *)pSpriteTest16, 32, 32, ST7789_LBLUE);
+	myTFT.TFTdrawSpriteData(60, 80, (uint8_t *)pSpriteTest16, 32, 32, ST7789_LBLUE);
+	TFT_MILLISEC_DELAY(TEST_DELAY5);
+	myTFT.TFTfillScreen(ST7789_BLACK);
+}
+
 
 /*!
 	@brief  "clock demo" , icons, , font 7
@@ -225,7 +254,7 @@ void Test403(void)
 	myTFT.TFTdrawText(50, 50, teststr1, ST7789_WHITE, ST7789_BLACK, 1);
 	TFT_MILLISEC_DELAY(TEST_DELAY2);
 
-	myTFT.TFTdrawBitmap(50, 65, 128, 128, ST7789_WHITE, ST7789_GREEN, (uint8_t *)pBackupMenuBitmap, 2048);
+	myTFT.TFTdrawBitmap(50, 65, 128, 128, ST7789_WHITE, ST7789_GREEN, (uint8_t *)pArrowImage, 2048);
 	TFT_MILLISEC_DELAY(TEST_DELAY5);
 	myTFT.TFTfillScreen(ST7789_BLACK);
 }

@@ -100,6 +100,8 @@
 #define ST7789_DGREY   0x7BEF
 #define ST7789_GYELLOW 0xAFE5
 #define ST7789_PINK    0xFC18
+#define ST7789_LBLUE   0x7E5F
+#define ST7789_BEIGE   0xB5D2
 
 // GPIO	Abstractions , for portability purposes
 #define TFT_DC_INIT gpio_init(_TFT_DC)
@@ -188,7 +190,7 @@ private:
 	void cmd89(void);
 	void AdjustWidthHeight(void);
 
-	const uint16_t _LibVersionNum = 101; /**< library version number eg 171 1.7.1*/
+	const uint16_t _LibVersionNum = 102; /**< library version number eg 171 1.7.1*/
 
 }; // end of class
 

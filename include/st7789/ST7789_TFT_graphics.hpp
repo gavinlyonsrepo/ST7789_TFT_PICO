@@ -67,7 +67,7 @@ public:
 	void TFTdrawFastHLine(uint16_t x, uint16_t y, uint16_t w, uint16_t color);
 
 	void TFTdrawRectWH(uint16_t x, uint16_t y, uint16_t w, uint16_t h, uint16_t color);
-	uint8_t TFTfillRectangle(uint16_t, uint16_t, uint16_t, uint16_t, uint16_t);
+	uint8_t TFTfillRectBuffer(uint16_t, uint16_t, uint16_t, uint16_t, uint16_t);
 	void TFTfillRect(uint16_t x, uint16_t y, uint16_t w, uint16_t h, uint16_t color);
 
 	void TFTdrawRoundRect(uint16_t x, uint16_t y, uint16_t w, uint16_t h, uint16_t r, uint16_t color);
@@ -95,6 +95,8 @@ public:
 	uint8_t TFTdrawBitmap(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t color, uint16_t bgcolor, uint8_t *pBmp, uint16_t sizeOfBitmap);
 	uint8_t TFTdrawBitmap24Data(uint16_t x, uint16_t y, uint8_t *pBmp, uint16_t w, uint16_t h);
 	uint8_t TFTdrawBitmap16Data(uint16_t x, uint16_t y, uint8_t *pBmp, uint16_t w, uint16_t h);
+	uint8_t TFTdrawSpriteData(uint8_t x, uint8_t y, uint8_t *pBmp, uint8_t w, uint8_t h, uint16_t backgroundColor);
+
 
 protected:
 	void pushColor(uint16_t color);

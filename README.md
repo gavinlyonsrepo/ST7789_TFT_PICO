@@ -47,10 +47,10 @@ Comment in one path and one path only.
 | Filename  | Function  | Note |
 | --- | --- | --- |
 | ST7789_TFT_HELLO | Hello world  | --- |
-| ST7789_TFT_TESTS | Text  + fonts | --- |
+| ST7789_TFT_TEXT | Text  + fonts | --- |
 | ST7789_TFT_GRAPHICS| Graphics | --- |
 | ST7789_TFT_FUNCTIONS_FPS| Functions(like rotate scroll) + FPS test 702| --- |
-| ST7789_TFT_BMP_DATA | bi colour, 24 & 16 bitmaps tests +  FPS test 701| Bitmap data is stored in arrays on PICO |
+| ST7789_TFT_BMP_DATA | 1, 16 & 24 bit colour bitmaps tests +  FPS test 701| Bitmap data is stored in arrays on PICO |
 
 
 ## Software
@@ -131,7 +131,7 @@ These  functions return a number in event of an error, such as wrong font chosen
 
 ### Bitmap
 
-There are 4 functions to support drawing bitmaps, 
+Functions to support drawing bitmaps, 
 
 | Num | Function Name | Colour support | test bitmap data size |  Note |
 | ------ | ------ | ------ | ------ | ------ |
@@ -139,11 +139,13 @@ There are 4 functions to support drawing bitmaps,
 | 2 | TFTdrawBitmap | bi-colour | 2048 bytes  | Data horizontally  addressed |
 | 3 | TFTdrawBitmap16Data | 16 bit color 565  | 32768  | Data from array on PICO |
 | 4 | TFTdrawBitmap24Data  | 24 bit color  | 49152  | Data from array on PICO, Converted by software to 16-bit color  |
+| 5 | TFTdrawSpriteData  | 16 bit color  565 | 32768  | Data from array on PICO, Draws background color tranparent | 
+
 
 1. Bitmap size in kiloBytes = (screenWidth * screenHeight * bitsPerPixel)/(1024 * 8)
 2. Math in bitmap size column 2-5  assumes 128x128 bitmap.
 3. The data array for 1 and 2 is created from image files using file data conversion tool [link](https://javl.github.io/image2cpp/)
-4. The data array for 3 and 4 is created from BMP files using file data conversion tool [link](https://notisrac.github.io/FileToCArray/)
+4. The data array for 3 and 5 is created from BMP files using file data conversion tool [link](https://notisrac.github.io/FileToCArray/)
 
 These functions will return error codes in event of an error.
 

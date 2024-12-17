@@ -247,8 +247,8 @@ void Test702(void)
 			previousMillis = currentMillis;
 			seconds++;
 			shapeColor = rand() % 60000;
-			if (count >= 1100)
-				return; // end if count gets to 1100
+			if (count >= 500)
+				return; // end if count gets to this
 		}
 		currentFramerate++;
 		count++;
