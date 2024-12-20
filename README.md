@@ -49,8 +49,8 @@ Comment in one path and one path only.
 | ST7789_TFT_HELLO | Hello world  | --- |
 | ST7789_TFT_TEXT | Text  + fonts | --- |
 | ST7789_TFT_GRAPHICS| Graphics | --- |
-| ST7789_TFT_FUNCTIONS_FPS| Functions(like rotate scroll) + FPS test 702| --- |
-| ST7789_TFT_BMP_DATA | 1, 16 & 24 bit colour bitmaps tests +  FPS test 701| Bitmap data is stored in arrays on PICO |
+| ST7789_TFT_FUNCTIONS_FPS| Functions(like rotate scroll) + FPS test | --- |
+| ST7789_TFT_BMP_DATA | 1, 16 & 24 bit colour bitmaps tests +  FPS test | Bitmap data is stored in arrays on PICO |
 
 
 ## Software
@@ -127,7 +127,7 @@ Font Methods:
 | 7-12 | drawText|N| draws character array |
 | 1-12 | print |~| Polymorphic print class which will print out many data types |
 
-These  functions return a number in event of an error, such as wrong font chosen , ASCII character outside chosen fonts range, character out of screen bounds and invalid character array pointer object. See API docs for details
+These functions return an error code in event of an error.
 
 ### Bitmap
 
@@ -139,7 +139,7 @@ Functions to support drawing bitmaps,
 | 2 | TFTdrawBitmap | bi-colour | 2048 bytes  | Data horizontally  addressed |
 | 3 | TFTdrawBitmap16Data | 16 bit color 565  | 32768  | Data from array on PICO |
 | 4 | TFTdrawBitmap24Data  | 24 bit color  | 49152  | Data from array on PICO, Converted by software to 16-bit color  |
-| 5 | TFTdrawSpriteData  | 16 bit color  565 | 32768  | Data from array on PICO, Draws background color tranparent | 
+| 5 | TFTdrawSpriteData  | 16 bit color  565 | 32768  | Data from array on PICO, Draws background color transparent | 
 
 
 1. Bitmap size in kiloBytes = (screenWidth * screenHeight * bitsPerPixel)/(1024 * 8)
@@ -147,7 +147,7 @@ Functions to support drawing bitmaps,
 3. The data array for 1 and 2 is created from image files using file data conversion tool [link](https://javl.github.io/image2cpp/)
 4. The data array for 3 and 5 is created from BMP files using file data conversion tool [link](https://notisrac.github.io/FileToCArray/)
 
-These functions will return error codes in event of an error.
+These functions will return an error code in event of an error.
 
 ## Hardware
 

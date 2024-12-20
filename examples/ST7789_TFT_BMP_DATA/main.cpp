@@ -13,7 +13,7 @@
 		-# Test 304 16 bit color image from a data array
 		-# Test 305 24 bit color image data from a data array
 		-# Test 603 FPS bitmap results to serial port, 38400 baud
-		-# Test 802 Error checkign bitmap functions, results to serial port
+		-# Test 802 Error checking bitmap functions, results to serial port
 
 */
 

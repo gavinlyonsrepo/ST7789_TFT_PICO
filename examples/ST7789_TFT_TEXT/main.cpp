@@ -525,16 +525,16 @@ void Test808(void) {
 	// character out of font range
 	// wide & thick lower case + ]
 	myTFT.TFTFontNum(myTFT.TFTFont_Wide);
-	returnValues.push_back(myTFT.TFTdrawChar(5, 5, 'a', ST7789_WHITE, ST7789_BLACK, 2));
+	returnValues.push_back(myTFT.TFTdrawChar(5, 5, '[', ST7789_WHITE, ST7789_BLACK, 2));
 	returnValues.push_back(myTFT.TFTdrawText(5, 5, testLowerCase, ST7789_WHITE, ST7789_BLACK, 2));
 	myTFT.TFTFontNum(myTFT.TFTFont_Thick);
-	returnValues.push_back(myTFT.TFTdrawChar(5, 5, 'a', ST7789_WHITE, ST7789_BLACK, 2));
+	returnValues.push_back(myTFT.TFTdrawChar(5, 5, '[', ST7789_WHITE, ST7789_BLACK, 2));
 	returnValues.push_back(myTFT.TFTdrawText(5, 25, testLowerCase, ST7789_WHITE, ST7789_BLACK, 2));
 	myTFT.TFTFontNum(myTFT.TFTFont_Bignum);
-	returnValues.push_back(myTFT.TFTdrawChar(5, 5, 'a', ST7789_WHITE, ST7789_BLACK));
+	returnValues.push_back(myTFT.TFTdrawChar(5, 5, ',', ST7789_WHITE, ST7789_BLACK));
 	returnValues.push_back(myTFT.TFTdrawText(5, 45, testNonNumExtend, ST7789_WHITE, ST7789_BLACK));
 	myTFT.TFTFontNum(myTFT.TFTFont_Mednum);
-	returnValues.push_back(myTFT.TFTdrawChar(5, 5, 'a', ST7789_WHITE, ST7789_BLACK));
+	returnValues.push_back(myTFT.TFTdrawChar(5, 5, ';', ST7789_WHITE, ST7789_BLACK));
 	returnValues.push_back(myTFT.TFTdrawText(5, 75, testNonNumExtend, ST7789_WHITE, ST7789_BLACK));
 	DisplayReset();
 
