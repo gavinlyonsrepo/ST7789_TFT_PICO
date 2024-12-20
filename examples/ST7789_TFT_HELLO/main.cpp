@@ -6,7 +6,7 @@
 	@note  See USER OPTIONS 0-2 in SETUP function
 
 	@test
-		-# Test0 Print out Hello world  
+		-# Test100 Print out Hello world  
 
 */
 
@@ -28,7 +28,7 @@ ST7789_TFT myTFT;
 //  Section ::  Function Headers 
 
 void Setup(void);  // setup + user options
-void Test0(void);  
+void Test100(void);  
 void EndTests(void);
 
 //  Section ::  MAIN loop
@@ -36,7 +36,7 @@ void EndTests(void);
 int main(void) 
 {
 	Setup();
-	Test0();
+	Test100();
 	EndTests();
 }
 // *** End OF MAIN **
@@ -88,7 +88,7 @@ void Setup(void)
 /*!
 	@brief print out hello world on TFT
 */
-void Test0(void) {
+void Test100(void) {
 
 	char teststr1[] = "Hello World";
 	printf("Version %u \n",myTFT.TFTLibVerNumGet());

@@ -7,11 +7,11 @@
 	@note  See USER OPTIONS 0-2 in SETUP function
 
 	@test
-		-# Test300 Scroll test 
-		-# Test301 Color
-		-# Test303 Rotate
-		-# Test304 change modes test -> Invert, display on/off and Sleep.
-		-# Test702 FPS frame rate per second test 
+		-# Test500 Scroll test 
+		-# Test501 Color
+		-# Test503 Rotate
+		-# Test504 change modes test -> Invert, display on/off and Sleep.
+		-# Test602 FPS frame rate per second test 
 */
 
 // Section ::  libraries
@@ -32,11 +32,11 @@ ST7789_TFT myTFT;
 //  Section ::  Function Headers
 
 void Setup(void);	// setup + user options
-void Test300(void);
-void Test301(void);	// test colors
-void Test303(void);	// Rotate
-void Test304(void);	// change modes test -> Invert, display on/off and Sleep.
-void Test702(void); // FPS, frame rate per second
+void Test500(void);
+void Test501(void);	// test colors
+void Test503(void);	// Rotate
+void Test504(void);	// change modes test -> Invert, display on/off and Sleep.
+void Test602(void); // FPS, frame rate per second
 void EndTests(void);
 
 //  Section ::  MAIN loop
@@ -44,11 +44,11 @@ void EndTests(void);
 int main(void)
 {
 	Setup();
-	Test300();
-	Test301();
-	Test303();
-	Test304();
-	Test702();
+	Test500();
+	Test501();
+	Test503();
+	Test504();
+	Test602();
 	EndTests();
 	return 0;
 }
@@ -103,9 +103,9 @@ void Setup(void)
 	myTFT.TFTST7789Initialize();
 	myTFT.TFTfillScreen(ST7789_BLACK);
 }
-void Test300(void)
+void Test500(void)
 {
-	printf("Test 300: Scroll\r\n");
+	printf("Test 500: Scroll\r\n");
 	myTFT.TFTFontNum(myTFT.TFTFont_Default);
 	const uint8_t LINES = 10, LINE_SIZE = 10, LINE_OFFSET = 3, TOP_FIXED = 0, BOTTOM_FIXED = 0;
 	char teststr1[] = "Scroll test";
@@ -131,10 +131,10 @@ void Test300(void)
 
 }
 
-void Test301(void)
+void Test501(void)
 {
 	myTFT.TFTfillScreen(ST7789_BLACK);
-	printf("Test 301: Color Test:: Red,green,blue,yellow,white, black background\r\n");
+	printf("Test 501: Color Test:: Red,green,blue,yellow,white, black background\r\n");
 	myTFT.TFTfillRoundRect(8, 60, 24, 60, 8, ST7789_RED);
 	myTFT.TFTfillRoundRect(32, 60, 24, 60, 8, ST7789_GREEN);
 	myTFT.TFTfillRoundRect(56, 60, 24, 60, 8, ST7789_BLUE);
@@ -148,7 +148,7 @@ void Test301(void)
 /*!
 	@brief  Rotate
 */
-void Test303()
+void Test503()
 {
 	char teststr0[] = "Rotate 0";	// normal
 	char teststr1[] = "Rotate 90";	// 90
@@ -182,9 +182,9 @@ void Test303()
 /*!
 	@brief  change modes test -> Invert, display on/off and Sleep.
 */
-void Test304()
+void Test504()
 {
-	printf("Test 304: Mode Tests\r\n");
+	printf("Test 504: Mode Tests\r\n");
 	char teststr1[] = "Modes Test";
 	myTFT.TFTfillRoundRect(32, 60, 24, 60, 8, ST7789_RED);
 	myTFT.TFTfillRoundRect(56, 60, 24, 60, 8, ST7789_GREEN);
@@ -196,21 +196,21 @@ void Test304()
 	
 	// Invert on and off
 	myTFT.TFTchangeInvertMode(true);
-	printf("Test 304-2: Mode Invert\r\n");
+	printf("Test 504-2: Mode Invert\r\n");
 	TFT_MILLISEC_DELAY(TEST_DELAY5);
 	myTFT.TFTchangeInvertMode(false);
 	TFT_MILLISEC_DELAY(TEST_DELAY5);
 	
 	// Display on and off
 	myTFT.TFTenableDisplay(false);
-	printf("Test 304-3: Mode Display off\r\n");
+	printf("Test 504-3: Mode Display off\r\n");
 	TFT_MILLISEC_DELAY(TEST_DELAY5);
 	myTFT.TFTenableDisplay(true);
 	TFT_MILLISEC_DELAY(TEST_DELAY5);
 	
 	// Sleep on and off
 	myTFT.TFTsleepDisplay(true);
-	printf("Test 304-4: Mode Sleep on\r\n");
+	printf("Test 504-4: Mode Sleep on\r\n");
 	TFT_MILLISEC_DELAY(TEST_DELAY5);
 	myTFT.TFTsleepDisplay(false);
 	TFT_MILLISEC_DELAY(TEST_DELAY2);
@@ -222,7 +222,7 @@ void Test304()
 /*!
 	@brief   Frame rate per second test, FPS test.
 */
-void Test702(void)
+void Test602(void)
 {
 	myTFT.TFTFontNum(myTFT.TFTFont_Default);
 	// Values to count frame rate per second

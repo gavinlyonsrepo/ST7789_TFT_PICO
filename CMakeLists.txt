@@ -20,7 +20,7 @@ add_executable(${PROJECT_NAME}
   examples/ST7789_TFT_HELLO/main.cpp
   #examples/ST7789_TFT_GRAPHICS/main.cpp
   #examples/ST7789_TFT_FUNCTIONS_FPS/main.cpp
-  #examples/ST7789_TFT_TESTS/main.cpp
+  #examples/ST7789_TFT_TEXT/main.cpp
   #examples/ST7789_TFT_BMP_DATA/main.cpp
 )
 
