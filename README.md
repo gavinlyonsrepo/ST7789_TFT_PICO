@@ -1,15 +1,13 @@
-# NOTE
 
-*This project has been amalgamated into [URL LINK](https://github.com/gavinlyonsrepo/displaylib_16bit_PICO)*
+# This project has been amalgamated into [URL LINK](https://github.com/gavinlyonsrepo/displaylib_16bit_PICO)
 
-[![Website](https://img.shields.io/badge/Website-Link-blue.svg)](https://gavinlyonsrepo.github.io/)  [![Rss](https://img.shields.io/badge/Subscribe-RSS-yellow.svg)](https://gavinlyonsrepo.github.io//feed.xml)  [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/paypalme/whitelight976)
 
-[![Image TFT](https://github.com/gavinlyonsrepo/Display_Lib_RPI/blob/main/extra/images/st7789.jpg)](https://github.com/gavinlyonsrepo/Display_Lib_RPI/blob/main/extra/images/st7789.jpg)
 
 
 ## Overview
 
 * Name: ST7789_TFT_PICO
+
 * Description:
 
 0. Library for a TFT SPI LCD, ST7789 Driver
