@@ -21,7 +21,6 @@ add_executable(${PROJECT_NAME}
   #examples/ST7789_TFT_GRAPHICS/main.cpp
   #examples/ST7789_TFT_FUNCTIONS_FPS/main.cpp
   #examples/ST7789_TFT_TEXT/main.cpp
-  #examples/ST7789_TFT_BMP_DATA/main.cpp
 )
 
 # Create map/bin/hex/uf2 files
@@ -34,7 +33,6 @@ target_sources(pico_st7789 INTERFACE
   ${CMAKE_CURRENT_LIST_DIR}/src/st7789/ST7789_TFT_graphics.cpp
   ${CMAKE_CURRENT_LIST_DIR}/src/st7789/ST7789_TFT_Print.cpp
   ${CMAKE_CURRENT_LIST_DIR}/src/st7789/ST7789_TFT_Font.cpp
-  ${CMAKE_CURRENT_LIST_DIR}/src/st7789/ST7789_TFT_Bitmap_Data.cpp
 )
 
 target_include_directories(pico_st7789 INTERFACE ${CMAKE_CURRENT_LIST_DIR}/include)
